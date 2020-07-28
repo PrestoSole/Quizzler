@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'Question.dart';
+import 'QuizBrain.dart';
 
+QuizBrain quizBrain = QuizBrain();
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
@@ -26,6 +29,9 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
+
+  int questionNumber = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,7 +44,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                quizBrain.questionBank[questionNumber].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -62,15 +68,32 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  scoreKeeper.add(
-                    Icon(
-                      Icons.check,
-                      size: 30,
-                      color: Colors.green,
-                    ),
-                  );
-                });
+                bool correctAnswer =
+                    quizBrain.questionBank[questionNumber].questionAnswer;
+                if (correctAnswer == true) {
+                  setState(() {
+                    scoreKeeper.add(
+                      Icon(
+                        Icons.check,
+                        size: 30,
+                        color: Colors.green,
+                      ),
+                    );
+                    questionNumber += 1;
+                  });
+                } else {
+                  setState(() {
+                    scoreKeeper.add(
+                      Icon(
+                        Icons.close,
+                        size: 30,
+                        color: Colors.red,
+                      ),
+                    );
+                    questionNumber += 1;
+                  });
+                }
+
                 //The user picked true.
               },
             ),
@@ -89,15 +112,32 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  scoreKeeper.add(
-                    Icon(
-                      Icons.close,
-                      size: 30,
-                      color: Colors.red,
-                    ),
-                  );
-                });
+                bool correctAnswer =
+                    quizBrain.questionBank[questionNumber].questionAnswer;
+                if (correctAnswer == false) {
+                  setState(() {
+                    scoreKeeper.add(
+                      Icon(
+                        Icons.check,
+                        size: 30,
+                        color: Colors.green,
+                      ),
+                    );
+                    questionNumber += 1;
+                  });
+                } else {
+                  setState(() {
+                    scoreKeeper.add(
+                      Icon(
+                        Icons.close,
+                        size: 30,
+                        color: Colors.red,
+                      ),
+                    );
+                    questionNumber += 1;
+                  });
+                }
+
                 //The user picked false.
               },
             ),

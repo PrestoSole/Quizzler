@@ -38,11 +38,7 @@ class QuizBrain {
   }
 
   bool isDone() {
-    if (_questionNumber < _questionBank.length - 1) {
-      return true;
-    } else {
-      return false;
-    }
+    return _questionNumber >= _questionBank.length - 1;
   }
 
   String getQuestionsText() {

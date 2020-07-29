@@ -26,8 +26,41 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> scoreKeeper = [];
-  QuizBrain quizBrain = QuizBrain();
+  final scoreKeeper = [];
+
+  final quizBrain = QuizBrain();
+
+  void _onPressed(bool answer) {
+    if (quizBrain.isDone()) {
+      return;
+    }
+
+    final correctAnswer = quizBrain.getQuestionsAnswer();
+
+    if (correctAnswer == answer) {
+      setState(() {
+        scoreKeeper.add(
+          Icon(
+            Icons.check,
+            size: 30,
+            color: Colors.green,
+          ),
+        );
+      });
+    } else {
+      setState(() {
+        scoreKeeper.add(
+          Icon(
+            Icons.close,
+            size: 30,
+            color: Colors.red,
+          ),
+        );
+      });
+    }
+
+    quizBrain.nextQuestion();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,34 +97,7 @@ class _QuizPageState extends State<QuizPage> {
                   fontSize: 20.0,
                 ),
               ),
-              onPressed: () {
-                if (quizBrain.isDone() == true) {
-                  bool correctAnswer = quizBrain.getQuestionsAnswer();
-                  if (correctAnswer == true) {
-                    setState(() {
-                      scoreKeeper.add(
-                        Icon(
-                          Icons.check,
-                          size: 30,
-                          color: Colors.green,
-                        ),
-                      );
-                    });
-                  } else {
-                    setState(() {
-                      scoreKeeper.add(
-                        Icon(
-                          Icons.close,
-                          size: 30,
-                          color: Colors.red,
-                        ),
-                      );
-                    });
-                  }
-
-                  quizBrain.nextQuestion();
-                }
-              },
+              onPressed: () => _onPressed(true),
             ),
           ),
         ),
@@ -107,39 +113,7 @@ class _QuizPageState extends State<QuizPage> {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {
-                if (quizBrain.isDone() == true) {
-                  bool correctAnswer = quizBrain.getQuestionsAnswer();
-                  if (correctAnswer == false) {
-                    setState(
-                      () {
-                        scoreKeeper.add(
-                          Icon(
-                            Icons.check,
-                            size: 30,
-                            color: Colors.green,
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    setState(
-                      () {
-                        scoreKeeper.add(
-                          Icon(
-                            Icons.close,
-                            size: 30,
-                            color: Colors.red,
-                          ),
-                        );
-                        quizBrain.nextQuestion();
-                      },
-                    );
-                  }
-
-                  quizBrain.nextQuestion();
-                }
-              },
+              onPressed: () => _onPressed(false),
             ),
           ),
         ),

@@ -30,8 +30,6 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  int questionNumber = 0;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,7 +42,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questionBank[questionNumber].questionText,
+                quizBrain.getQuestionsText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -68,8 +66,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer =
-                    quizBrain.questionBank[questionNumber].questionAnswer;
+                bool correctAnswer = quizBrain.getQuestionsAnswer();
                 if (correctAnswer == true) {
                   setState(() {
                     scoreKeeper.add(
@@ -79,7 +76,6 @@ class _QuizPageState extends State<QuizPage> {
                         color: Colors.green,
                       ),
                     );
-                    questionNumber += 1;
                   });
                 } else {
                   setState(() {
@@ -90,7 +86,6 @@ class _QuizPageState extends State<QuizPage> {
                         color: Colors.red,
                       ),
                     );
-                    questionNumber += 1;
                   });
                 }
 
@@ -112,8 +107,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer =
-                    quizBrain.questionBank[questionNumber].questionAnswer;
+                bool correctAnswer = quizBrain.getQuestionsAnswer();
                 if (correctAnswer == false) {
                   setState(() {
                     scoreKeeper.add(
@@ -123,7 +117,7 @@ class _QuizPageState extends State<QuizPage> {
                         color: Colors.green,
                       ),
                     );
-                    questionNumber += 1;
+                    quizBrain.nextQuestion();
                   });
                 } else {
                   setState(() {
@@ -134,7 +128,7 @@ class _QuizPageState extends State<QuizPage> {
                         color: Colors.red,
                       ),
                     );
-                    questionNumber += 1;
+                    quizBrain.nextQuestion();
                   });
                 }
 

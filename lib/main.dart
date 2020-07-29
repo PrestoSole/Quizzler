@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Question.dart';
 import 'QuizBrain.dart';
 
-QuizBrain quizBrain = QuizBrain();
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
@@ -29,6 +27,7 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
+  QuizBrain quizBrain = QuizBrain();
 
   @override
   Widget build(BuildContext context) {
@@ -66,30 +65,32 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer = quizBrain.getQuestionsAnswer();
-                if (correctAnswer == true) {
-                  setState(() {
-                    scoreKeeper.add(
-                      Icon(
-                        Icons.check,
-                        size: 30,
-                        color: Colors.green,
-                      ),
-                    );
-                  });
-                } else {
-                  setState(() {
-                    scoreKeeper.add(
-                      Icon(
-                        Icons.close,
-                        size: 30,
-                        color: Colors.red,
-                      ),
-                    );
-                  });
-                }
+                if (quizBrain.isDone() == true) {
+                  bool correctAnswer = quizBrain.getQuestionsAnswer();
+                  if (correctAnswer == true) {
+                    setState(() {
+                      scoreKeeper.add(
+                        Icon(
+                          Icons.check,
+                          size: 30,
+                          color: Colors.green,
+                        ),
+                      );
+                    });
+                  } else {
+                    setState(() {
+                      scoreKeeper.add(
+                        Icon(
+                          Icons.close,
+                          size: 30,
+                          color: Colors.red,
+                        ),
+                      );
+                    });
+                  }
 
-                //The user picked true.
+                  quizBrain.nextQuestion();
+                }
               },
             ),
           ),
@@ -107,32 +108,37 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer = quizBrain.getQuestionsAnswer();
-                if (correctAnswer == false) {
-                  setState(() {
-                    scoreKeeper.add(
-                      Icon(
-                        Icons.check,
-                        size: 30,
-                        color: Colors.green,
-                      ),
+                if (quizBrain.isDone() == true) {
+                  bool correctAnswer = quizBrain.getQuestionsAnswer();
+                  if (correctAnswer == false) {
+                    setState(
+                      () {
+                        scoreKeeper.add(
+                          Icon(
+                            Icons.check,
+                            size: 30,
+                            color: Colors.green,
+                          ),
+                        );
+                      },
                     );
-                    quizBrain.nextQuestion();
-                  });
-                } else {
-                  setState(() {
-                    scoreKeeper.add(
-                      Icon(
-                        Icons.close,
-                        size: 30,
-                        color: Colors.red,
-                      ),
+                  } else {
+                    setState(
+                      () {
+                        scoreKeeper.add(
+                          Icon(
+                            Icons.close,
+                            size: 30,
+                            color: Colors.red,
+                          ),
+                        );
+                        quizBrain.nextQuestion();
+                      },
                     );
-                    quizBrain.nextQuestion();
-                  });
-                }
+                  }
 
-                //The user picked false.
+                  quizBrain.nextQuestion();
+                }
               },
             ),
           ),

@@ -47,7 +47,7 @@ class _QuizPageState extends State<QuizPage> {
       return;
     }
     final bool correctAnswer = quizBrain.getQuestionsAnswer();
-    if (correctAnswer == true) {
+    if (correctAnswer == answer) {
       setState(() {
         scoreKeeper.add(
           Icon(

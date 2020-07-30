@@ -69,6 +69,10 @@ class QuizBrain {
     return _questionNumber >= _questionBank.length - 1;
   }
 
+  void resetApp() {
+    _questionNumber = 0;
+  }
+
   /// Get the question
   String getQuestionsText() {
     return _questionBank[_questionNumber].questionText;

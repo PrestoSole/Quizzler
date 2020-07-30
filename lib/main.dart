@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
-import 'QuizBrain.dart';
+import 'quiz_brain.dart';
 
-void main() => runApp(Quizzler());
+void main() => runApp(const Quizzler());
 
+/// Material App
+@immutable
 class Quizzler extends StatelessWidget {
+  /// Keys
+  const Quizzler({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.grey.shade900,
-        body: SafeArea(
+        body: const SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: 10.0,
+              vertical: 10.0,
+            ),
             child: QuizPage(),
           ),
         ),
@@ -20,14 +27,50 @@ class Quizzler extends StatelessWidget {
   }
 }
 
+/// The Brain
 class QuizPage extends StatefulWidget {
+  /// Keys
+  const QuizPage({Key key}) : super(key: key);
+
   @override
   _QuizPageState createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> scoreKeeper = [];
-  QuizBrain quizBrain = QuizBrain();
+  /// scoreKeeper stores the user's answers
+  final List<Icon> scoreKeeper = <Icon>[];
+  final QuizBrain quizBrain = QuizBrain();
+
+  /// Check the user's answer Function
+  void _onPressed(bool answer) {
+    if (quizBrain.isDone()) {
+      return;
+    }
+    final bool correctAnswer = quizBrain.getQuestionsAnswer();
+    if (correctAnswer == true) {
+      setState(() {
+        scoreKeeper.add(
+          Icon(
+            Icons.check,
+            size: 30,
+            color: Colors.green,
+          ),
+        );
+      });
+    } else {
+      setState(() {
+        scoreKeeper.add(
+          Icon(
+            Icons.close,
+            size: 30,
+            color: Colors.red,
+          ),
+        );
+      });
+    }
+
+    quizBrain.nextQuestion();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +78,11 @@ class _QuizPageState extends State<QuizPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        /// This expanded widget displays the questions
         Expanded(
           flex: 5,
           child: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
                 quizBrain.getQuestionsText(),
@@ -51,12 +95,17 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
+
+        /// This expanded widget displays the true button
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15.0),
             child: FlatButton(
               textColor: Colors.white,
               color: Colors.green,
+              onPressed: () {
+                _onPressed(true);
+              },
               child: Text(
                 'True',
                 style: TextStyle(
@@ -64,42 +113,19 @@ class _QuizPageState extends State<QuizPage> {
                   fontSize: 20.0,
                 ),
               ),
-              onPressed: () {
-                if (quizBrain.isDone() == true) {
-                  bool correctAnswer = quizBrain.getQuestionsAnswer();
-                  if (correctAnswer == true) {
-                    setState(() {
-                      scoreKeeper.add(
-                        Icon(
-                          Icons.check,
-                          size: 30,
-                          color: Colors.green,
-                        ),
-                      );
-                    });
-                  } else {
-                    setState(() {
-                      scoreKeeper.add(
-                        Icon(
-                          Icons.close,
-                          size: 30,
-                          color: Colors.red,
-                        ),
-                      );
-                    });
-                  }
-
-                  quizBrain.nextQuestion();
-                }
-              },
             ),
           ),
         ),
+
+        /// This expanded widget displays the false button
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15.0),
             child: FlatButton(
               color: Colors.red,
+              onPressed: () {
+                _onPressed(false);
+              },
               child: Text(
                 'False',
                 style: TextStyle(
@@ -107,53 +133,18 @@ class _QuizPageState extends State<QuizPage> {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {
-                if (quizBrain.isDone() == true) {
-                  bool correctAnswer = quizBrain.getQuestionsAnswer();
-                  if (correctAnswer == false) {
-                    setState(
-                      () {
-                        scoreKeeper.add(
-                          Icon(
-                            Icons.check,
-                            size: 30,
-                            color: Colors.green,
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    setState(
-                      () {
-                        scoreKeeper.add(
-                          Icon(
-                            Icons.close,
-                            size: 30,
-                            color: Colors.red,
-                          ),
-                        );
-                        quizBrain.nextQuestion();
-                      },
-                    );
-                  }
-
-                  quizBrain.nextQuestion();
-                }
-              },
             ),
           ),
         ),
+
+        /// This is were the checks and closes are displayed
         Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(children: scoreKeeper),
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: scoreKeeper,
+          ),
         ),
       ],
     );
   }
 }
-
-/*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
-*/

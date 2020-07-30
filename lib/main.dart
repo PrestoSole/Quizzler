@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
-void main() => runApp(const Quizzler());
+void main() => runApp(Phoenix(child: const Quizzler()));
 
 /// Material App
 @immutable
@@ -12,6 +13,17 @@ class Quizzler extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.grey[900],
+          leading: IconButton(
+            icon: Icon(
+              Icons.refresh,
+            ),
+            onPressed: () {
+              Phoenix.rebirth(context);
+            },
+          ),
+        ),
         backgroundColor: Colors.grey.shade900,
         body: const SafeArea(
           child: Padding(

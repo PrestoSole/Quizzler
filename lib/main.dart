@@ -12,30 +12,10 @@ class Quizzler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.grey[900],
-          leading: IconButton(
-            icon: Icon(
-              Icons.refresh,
-            ),
-            onPressed: () {
-              Phoenix.rebirth(context);
-            },
-          ),
-        ),
-        backgroundColor: Colors.grey.shade900,
-        body: const SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10.0,
-              vertical: 10.0,
-            ),
-            child: QuizPage(),
-          ),
-        ),
-      ),
-    );
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.grey[900],
+            primaryColor: Colors.grey[900]),
+        home: QuizPage());
   }
 }
 
@@ -86,77 +66,99 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        /// This expanded widget displays the questions
-        Expanded(
-          flex: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-              child: Text(
-                quizBrain.getQuestionsText(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 25.0,
-                  color: Colors.white,
+    return Scaffold(
+      appBar: AppBar(
+        //backgroundColor: Colors.grey[900],
+        leading: IconButton(
+          icon: Icon(
+            Icons.refresh,
+          ),
+          onPressed: () {
+            Phoenix.rebirth(context);
+          },
+        ),
+      ),
+      //backgroundColor: Colors.grey.shade900,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 10.0,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              /// This expanded widget displays the questions
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Center(
+                    child: Text(
+                      quizBrain.getQuestionsText(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
 
-        /// This expanded widget displays the true button
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: FlatButton(
-              textColor: Colors.white,
-              color: Colors.green,
-              onPressed: () {
-                _onPressed(true);
-              },
-              child: Text(
-                'True',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
+              /// This expanded widget displays the true button
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: FlatButton(
+                    textColor: Colors.white,
+                    color: Colors.green,
+                    onPressed: () {
+                      _onPressed(true);
+                    },
+                    child: Text(
+                      'True',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
 
-        /// This expanded widget displays the false button
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: FlatButton(
-              color: Colors.red,
-              onPressed: () {
-                _onPressed(false);
-              },
-              child: Text(
-                'False',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
+              /// This expanded widget displays the false button
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: FlatButton(
+                    color: Colors.red,
+                    onPressed: () {
+                      _onPressed(false);
+                    },
+                    child: Text(
+                      'False',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
 
-        /// This is were the checks and closes are displayed
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: scoreKeeper,
+              /// This is were the checks and closes are displayed
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: scoreKeeper,
+                ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

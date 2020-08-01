@@ -15,8 +15,9 @@ class Quizzler extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          scaffoldBackgroundColor: Colors.grey[900],
-          primaryColor: Colors.grey[900]),
+        scaffoldBackgroundColor: Colors.black,
+        primaryColor: Colors.black,
+      ),
       home: const QuizPage(),
     );
   }
@@ -36,89 +37,94 @@ class _QuizPageState extends State<QuizPage> {
   final List<Icon> scoreKeeper = <Icon>[];
   final QuizBrain quizBrain = QuizBrain();
 
+  /// Alert Popup Function
+  void alert() {
+    final AlertStyle _alertStyle = AlertStyle(
+      animationType: AnimationType.fromBottom,
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descStyle: TextStyle(fontWeight: FontWeight.bold),
+      animationDuration: const Duration(milliseconds: 250),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: const BorderSide(
+          color: Colors.black,
+        ),
+      ),
+      titleStyle: TextStyle(
+        color: Colors.red,
+      ),
+    );
+    Alert(
+      context: context,
+      style: _alertStyle,
+      type: AlertType.success,
+      title: "Finished",
+      desc: "You've reached the end of the quiz.",
+      buttons: <DialogButton>[
+        DialogButton(
+          onPressed: () {
+            setState(() {
+              quizBrain.resetApp();
+              scoreKeeper.clear();
+              Navigator.pop(context);
+            });
+          },
+          color: const Color.fromRGBO(0, 179, 134, 1.0),
+          child: Text(
+            "Restart",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+        ),
+        DialogButton(
+          onPressed: () => Navigator.pop(context),
+          gradient: const LinearGradient(
+            colors: <Color>[
+              Color.fromRGBO(116, 116, 191, 1.0),
+              Color.fromRGBO(52, 138, 199, 1.0)
+            ],
+          ),
+          child: Text(
+            "Close",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+        )
+      ],
+    ).show();
+  }
+
   /// Check the user's answer Function
   void _onPressed(bool answer) {
-    if (quizBrain.isDone()) {
-      setState(() {
-        /// TODO: Make an Alert class in a seperate file
-        Alert(
-          context: context,
-          type: AlertType.warning,
-          title: "Finished",
-          desc: 'You\'ve reached the end of the quiz.',
-          buttons: [
-            DialogButton(
-              child: Text(
-                "Restart",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () {
-                setState(() {
-                  quizBrain.resetApp();
-                  scoreKeeper.clear();
-                  Navigator.pop(context);
-                });
-              },
-              color: Color.fromRGBO(0, 179, 134, 1.0),
-            ),
-            DialogButton(
-              child: Text(
-                "Close",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () => Navigator.pop(context),
-              gradient: LinearGradient(colors: [
-                Color.fromRGBO(116, 116, 191, 1.0),
-                Color.fromRGBO(52, 138, 199, 1.0)
-              ]),
-            )
-          ],
-        ).show();
-      });
-    } else {
-      final bool correctAnswer = quizBrain.getQuestionsAnswer();
-      if (correctAnswer == answer) {
-        setState(() {
+    setState(() {
+      if (quizBrain.isDone()) {
+        alert();
+      } else {
+        final bool correctAnswer = quizBrain.getQuestionsAnswer();
+        if (correctAnswer == answer) {
           scoreKeeper.add(
             Icon(
               Icons.check,
-              size: 30,
+              size: 24,
               color: Colors.green,
             ),
           );
-        });
-      } else {
-        setState(() {
+        } else {
           scoreKeeper.add(
             Icon(
               Icons.close,
-              size: 30,
+              size: 24,
               color: Colors.red,
             ),
           );
-        });
+        }
       }
-    }
-
-    quizBrain.nextQuestion();
+      quizBrain.nextQuestion();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//      appBar: AppBar(
-////        leading: IconButton(
-////          icon: Icon(
-////            Icons.refresh,
-////          ),
-////          onPressed: () {
-////            setState(() {
-////              quizBrain.resetApp();
-////              scoreKeeper.clear();
-////            });
-////          },
-////        ),
-//          ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -150,7 +156,7 @@ class _QuizPageState extends State<QuizPage> {
               /// This expanded widget displays the true button
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: FlatButton(
                     textColor: Colors.white,
                     color: Colors.green,
@@ -171,7 +177,7 @@ class _QuizPageState extends State<QuizPage> {
               /// This expanded widget displays the false button
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: FlatButton(
                     color: Colors.red,
                     onPressed: () {

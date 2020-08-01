@@ -69,6 +69,7 @@ class QuizBrain {
     return _questionNumber >= _questionBank.length - 1;
   }
 
+  /// Reset QuestionNumber
   void resetApp() {
     _questionNumber = 0;
   }

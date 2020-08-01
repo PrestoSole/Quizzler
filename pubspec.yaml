@@ -14,6 +14,8 @@ environment:
 
 dependencies:
   lint: ^1.2.0
+  rflutter_alert: ^1.0.3
+
   flutter:
     sdk: flutter
 

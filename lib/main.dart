@@ -1,3 +1,4 @@
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
 
@@ -9,6 +10,8 @@ class Quizzler extends StatelessWidget {
   /// Keys
   const Quizzler({Key key}) : super(key: key);
   @override
+
+  /// Material App
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
@@ -36,29 +39,65 @@ class _QuizPageState extends State<QuizPage> {
   /// Check the user's answer Function
   void _onPressed(bool answer) {
     if (quizBrain.isDone()) {
-      return;
-    }
-    final bool correctAnswer = quizBrain.getQuestionsAnswer();
-    if (correctAnswer == answer) {
       setState(() {
-        scoreKeeper.add(
-          Icon(
-            Icons.check,
-            size: 30,
-            color: Colors.green,
-          ),
-        );
+        /// TODO: Make an Alert class in a seperate file
+        Alert(
+          context: context,
+          type: AlertType.warning,
+          title: "Finished",
+          desc: 'You\'ve reached the end of the quiz.',
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Restart",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {
+                setState(() {
+                  quizBrain.resetApp();
+                  scoreKeeper.clear();
+                  Navigator.pop(context);
+                });
+              },
+              color: Color.fromRGBO(0, 179, 134, 1.0),
+            ),
+            DialogButton(
+              child: Text(
+                "Close",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              gradient: LinearGradient(colors: [
+                Color.fromRGBO(116, 116, 191, 1.0),
+                Color.fromRGBO(52, 138, 199, 1.0)
+              ]),
+            )
+          ],
+        ).show();
       });
     } else {
-      setState(() {
-        scoreKeeper.add(
-          Icon(
-            Icons.close,
-            size: 30,
-            color: Colors.red,
-          ),
-        );
-      });
+      final bool correctAnswer = quizBrain.getQuestionsAnswer();
+      if (correctAnswer == answer) {
+        setState(() {
+          scoreKeeper.add(
+            Icon(
+              Icons.check,
+              size: 30,
+              color: Colors.green,
+            ),
+          );
+        });
+      } else {
+        setState(() {
+          scoreKeeper.add(
+            Icon(
+              Icons.close,
+              size: 30,
+              color: Colors.red,
+            ),
+          );
+        });
+      }
     }
 
     quizBrain.nextQuestion();
@@ -67,19 +106,19 @@ class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.refresh,
-          ),
-          onPressed: () {
-            setState(() {
-              quizBrain.resetApp();
-              scoreKeeper.clear();
-            });
-          },
-        ),
-      ),
+//      appBar: AppBar(
+////        leading: IconButton(
+////          icon: Icon(
+////            Icons.refresh,
+////          ),
+////          onPressed: () {
+////            setState(() {
+////              quizBrain.resetApp();
+////              scoreKeeper.clear();
+////            });
+////          },
+////        ),
+//          ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(

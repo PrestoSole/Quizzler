@@ -43,15 +43,15 @@ class _QuizPageState extends State<QuizPage> {
       animationType: AnimationType.fromBottom,
       isCloseButton: false,
       isOverlayTapDismiss: false,
-      descStyle: TextStyle(fontWeight: FontWeight.bold),
-      animationDuration: const Duration(milliseconds: 250),
+      descStyle: const TextStyle(fontWeight: FontWeight.bold),
+      animationDuration: const Duration(),
       alertBorder: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
         side: const BorderSide(
           color: Colors.black,
         ),
       ),
-      titleStyle: TextStyle(
+      titleStyle: const TextStyle(
         color: Colors.red,
       ),
     );
@@ -71,7 +71,7 @@ class _QuizPageState extends State<QuizPage> {
             });
           },
           color: const Color.fromRGBO(0, 179, 134, 1.0),
-          child: Text(
+          child: const Text(
             "Restart",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
@@ -84,7 +84,7 @@ class _QuizPageState extends State<QuizPage> {
               Color.fromRGBO(52, 138, 199, 1.0)
             ],
           ),
-          child: Text(
+          child: const Text(
             "Close",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
@@ -102,7 +102,7 @@ class _QuizPageState extends State<QuizPage> {
         final bool correctAnswer = quizBrain.getQuestionsAnswer();
         if (correctAnswer == answer) {
           scoreKeeper.add(
-            Icon(
+            const Icon(
               Icons.check,
               size: 24,
               color: Colors.green,
@@ -110,7 +110,7 @@ class _QuizPageState extends State<QuizPage> {
           );
         } else {
           scoreKeeper.add(
-            Icon(
+            const Icon(
               Icons.close,
               size: 24,
               color: Colors.red,
@@ -144,7 +144,7 @@ class _QuizPageState extends State<QuizPage> {
                     child: Text(
                       quizBrain.getQuestionsText(),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 25.0,
                         color: Colors.white,
                       ),
@@ -163,7 +163,7 @@ class _QuizPageState extends State<QuizPage> {
                     onPressed: () {
                       _onPressed(true);
                     },
-                    child: Text(
+                    child: const Text(
                       'True',
                       style: TextStyle(
                         color: Colors.white,
@@ -183,7 +183,7 @@ class _QuizPageState extends State<QuizPage> {
                     onPressed: () {
                       _onPressed(false);
                     },
-                    child: Text(
+                    child: const Text(
                       'False',
                       style: TextStyle(
                         fontSize: 20.0,
